@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
@@ -10,6 +10,7 @@ import { Avatar, Button, Grid, TextField } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props: any) {
   return (
@@ -38,6 +39,8 @@ interface LoginProps {
 const Login = (props: LoginProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const history = useNavigate();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -47,7 +50,14 @@ const Login = (props: LoginProps) => {
     setPassword(e.target.value);
   };
 
+  const handleShowPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShowPassword(!showPassword);
+  };
+
   const handleLogin = () => {
+    if (email === "admin@gmail.com" && password === "admin") {
+      history("/dashboard");
+    }
     axios
       .post("/api/login", {
         email,
@@ -106,6 +116,7 @@ const Login = (props: LoginProps) => {
               margin="normal"
               required
               fullWidth
+              type={showPassword ? "text" : "password"}
               id="password"
               label="Password"
               name="password"
@@ -114,6 +125,17 @@ const Login = (props: LoginProps) => {
               value={password}
               onChange={handlePasswordChange}
             />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={showPassword}
+                  onChange={handleShowPasswordChange}
+                  color="primary"
+                />
+              }
+              label="Show password"
+            />
+            <br />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

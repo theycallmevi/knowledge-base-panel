@@ -36,6 +36,10 @@ const theme = createTheme();
 
 interface RegisterProps {
   // props yang diterima
+  // firstName: string;
+  // lastName: string;
+  // email: string;
+  // password: string;
 }
 
 const Register = (props: RegisterProps) => {
